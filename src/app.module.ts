@@ -3,7 +3,6 @@ import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import dbConfig from '../typeorm.config';
 
 @Module({
   imports: [
@@ -15,7 +14,12 @@ import dbConfig from '../typeorm.config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        dbConfig,
+        type: 'postgres',
+        host: configService.get('PG_HOST'),
+        port: +configService.get('PG_PORT'),
+        username: configService.get('PG_USER'),
+        password: configService.get('PG_PASSWORD'),
+        database: configService.get('PG_NAME'),
         entities: [],
         autoLoadEntities: true,
       }),
