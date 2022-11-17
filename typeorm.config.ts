@@ -13,8 +13,9 @@ const configService = new ConfigService();
 
 const dbConfig: DataSourceOptions = {
   type: 'postgres',
+  synchronize: false,
   migrations: ['migrations/*.ts'],
-  entities: ['**/*entity.js'],
+  entities: ['**/*.entity{.ts,.js}'],
   host: configService.get('PG_HOST'),
   port: +configService.get('PG_PORT'),
   username: configService.get('PG_USER'),
@@ -24,6 +25,9 @@ const dbConfig: DataSourceOptions = {
 
 switch (process.env.NODE_ENV) {
   case 'development':
+    Object.assign(dbConfig, {
+      logging: true,
+    });
     break;
   case 'test':
     Object.assign(dbConfig, {
