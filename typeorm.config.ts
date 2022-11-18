@@ -31,7 +31,7 @@ switch (process.env.NODE_ENV) {
     break;
   case 'test':
     Object.assign(dbConfig, {
-      entities: ['**/*.entity.ts'],
+      entities: ['**/*.entity{.ts,.js}'],
       migrationRun: true,
     });
     break;
