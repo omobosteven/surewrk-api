@@ -45,7 +45,9 @@ export abstract class BaseDetails {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email: string;
 
   @Column()
@@ -67,15 +69,13 @@ export abstract class BaseDetails {
 export class Admin extends BaseDetails {
   @ManyToOne(() => Role, (role) => role.admin, {
     cascade: true,
+    nullable: false,
   })
   role: Role;
 }
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: number;
-
+export class User extends BaseDetails {
   @Column()
   address: string;
 
@@ -84,6 +84,7 @@ export class User {
 
   @ManyToOne(() => Role, (role) => role.users, {
     cascade: true,
+    nullable: false,
   })
   role: Role;
 }
